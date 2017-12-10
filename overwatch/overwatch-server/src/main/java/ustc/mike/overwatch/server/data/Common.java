@@ -21,33 +21,16 @@
  *
  ******************************************************************************/
 
-package ustc.mike.overwatch.server;
-
-import ustc.mike.overwatch.server.data.RecordRepository;
-import ustc.mike.overwatch.server.net.NettyServer;
-import ustc.mike.overwatch.server.web.ClientController;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package ustc.mike.overwatch.server.data;
 
 /**
  * @author Mike
  * @project overwatch
- * @date 10/12/2017, 3:05 PM
+ * @date 10/12/2017, 4:16 PM
  * @e-mail mike@mikecoder.cn
  */
-@SpringBootApplication
-public class Main {
+public class Common {
+    public static final Clients clients = new Clients();
     
-    @Autowired
-    private RecordRepository recordRepository;
-    
-    public static void main(String[] args) {
-        Object[] classes = new Object[2];
-        classes[0] = ClientController.class;
-        classes[1] = NettyServer.class;
-        
-        SpringApplication.run(classes, args);
-    }
+    public static RecordRepository recordRepository = null;
 }

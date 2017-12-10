@@ -30,6 +30,7 @@ package ustc.mike.overwatch.common.data;
  * @e-mail mike@mikecoder.cn
  */
 public class Report extends Data {
+    private String name;
     private String OS;
     private double load;
     private int    cpus;
@@ -88,6 +89,24 @@ public class Report extends Data {
         this.cpus = cpus;
     }
     
+    /**
+     * Getter for property 'name'.
+     *
+     * @return Value for property 'name'.
+     */
+    public String getName() {
+        return name;
+    }
+    
+    /**
+     * Setter for property 'name'.
+     *
+     * @param name Value to set for property 'name'.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,6 +116,7 @@ public class Report extends Data {
         
         if (Double.compare(report.load, load) != 0) return false;
         if (cpus != report.cpus) return false;
+        if (name != null ? !name.equals(report.name) : report.name != null) return false;
         return OS != null ? OS.equals(report.OS) : report.OS == null;
     }
     
@@ -104,7 +124,8 @@ public class Report extends Data {
     public int hashCode() {
         int result;
         long temp;
-        result = OS != null ? OS.hashCode() : 0;
+        result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (OS != null ? OS.hashCode() : 0);
         temp = Double.doubleToLongBits(load);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + cpus;

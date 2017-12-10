@@ -21,33 +21,24 @@
  *
  ******************************************************************************/
 
-package ustc.mike.overwatch.server;
+package ustc.mike.overwatch.server.data;
 
-import ustc.mike.overwatch.server.data.RecordRepository;
-import ustc.mike.overwatch.server.net.NettyServer;
-import ustc.mike.overwatch.server.web.ClientController;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.List;
 
 /**
  * @author Mike
  * @project overwatch
- * @date 10/12/2017, 3:05 PM
+ * @date 10/12/2017, 4:05 PM
  * @e-mail mike@mikecoder.cn
  */
-@SpringBootApplication
-public class Main {
+@Repository
+public interface RecordRepository extends JpaRepository<Record, Long> {
     
-    @Autowired
-    private RecordRepository recordRepository;
-    
-    public static void main(String[] args) {
-        Object[] classes = new Object[2];
-        classes[0] = ClientController.class;
-        classes[1] = NettyServer.class;
-        
-        SpringApplication.run(classes, args);
-    }
+    @Query("from record where record.name=:name and timestamp > :start and timestamp < :end order by timestamp desc")
+    List<Record> getRecords(@Param("name") String name, @Param("start") long start, @Param("end") long end);
 }

@@ -25,10 +25,7 @@ package ustc.mike.overwatch.client;
 
 import com.alibaba.fastjson.JSON;
 import ustc.mike.overwatch.client.utils.Utils;
-import ustc.mike.overwatch.common.data.Command;
-import ustc.mike.overwatch.common.data.CommandType;
-import ustc.mike.overwatch.common.data.Report;
-import ustc.mike.overwatch.common.data.Server;
+import ustc.mike.overwatch.common.data.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,22 +60,30 @@ public class Main implements CommandLineRunner {
     @Value("${overwatch.server.port:10666}")
     int    serverPort;
     
+    private Client client = new Client();
+    
     @Override
     public void run(String... args) throws Exception {
         Logger logger = LoggerFactory.getLogger(Main.class.getName());
+        String localIp = InetAddress.getLocalHost().getHostAddress();
+    
+        client.setName(Utils.genRandomName());
+        client.setIp(localIp);
+        client.setOnline(true);
+    
         logger.info("Register to :" + ip + ":" + port);
         Socket socket = new Socket(ip, port);
         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        
-        String localIp = InetAddress.getLocalHost().getHostAddress();
-        Command command = new Command();
-        command.setType(CommandType.CLIENT_REGIST);
-        HashMap<String, String> contents = new HashMap<String, String>();
-        contents.put("ip", localIp);
-        command.setContents(contents);
-        
-        writer.write(command.toString());
+    
+        Command registCmd = new Command();
+        registCmd.setType(CommandType.CLIENT_REGIST);
+        HashMap<String, String> registCmdContents = new HashMap<String, String>();
+    
+        registCmdContents.put("client", client.toString());
+        registCmd.setContents(registCmdContents);
+    
+        writer.write(registCmd.toString());
         writer.flush();
         
         String response = reader.readLine();
@@ -87,17 +92,34 @@ public class Main implements CommandLineRunner {
         logger.info("Connect to :" + server + ":" + serverPort);
         Socket ReportSocket = new Socket(server.getIp(), serverPort);
         final BufferedWriter reporter = new BufferedWriter(new OutputStreamWriter(ReportSocket.getOutputStream()));
+    
+        Command onlineCmd = new Command();
+        onlineCmd.setType(CommandType.CLIENT_REGIST);
+        HashMap<String, String> onlineCmdContents = new HashMap<String, String>();
+        onlineCmdContents.put("client", client.toString());
+        onlineCmd.setContents(onlineCmdContents);
+    
+        reporter.write(onlineCmd.toString());
+        reporter.flush();
         
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
                 Report report = new Report();
+                report.setName(client.getName());
                 report.setCpus(Utils.getCpuNum());
                 report.setLoad(Utils.getAvgLoad());
                 report.setOS(Utils.getOs());
+    
+                Command reportCmd = new Command();
+                reportCmd.setType(CommandType.CLIENT_REPORT);
+                HashMap<String, String> reportCmdContents = new HashMap<String, String>();
+                reportCmdContents.put("report", report.toString());
+                reportCmd.setContents(reportCmdContents);
                 
                 try {
-                    reporter.write(report.toString());
+                    reporter.write(reportCmd.toString());
+                    reporter.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

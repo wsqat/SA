@@ -21,33 +21,45 @@
  *
  ******************************************************************************/
 
-package ustc.mike.overwatch.server;
+package ustc.mike.overwatch.server.net;
 
-import ustc.mike.overwatch.server.data.RecordRepository;
-import ustc.mike.overwatch.server.net.NettyServer;
-import ustc.mike.overwatch.server.web.ClientController;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.jboss.netty.channel.ChannelHandler;
+import org.jboss.netty.channel.ChannelPipeline;
+import org.jboss.netty.channel.ChannelPipelineFactory;
+import org.jboss.netty.channel.Channels;
+import org.jboss.netty.handler.codec.frame.DelimiterBasedFrameDecoder;
+import org.jboss.netty.handler.codec.frame.Delimiters;
+import org.jboss.netty.handler.codec.string.StringDecoder;
+import org.jboss.netty.handler.codec.string.StringEncoder;
+import org.jboss.netty.util.CharsetUtil;
+import org.jboss.netty.util.Timer;
 
 /**
  * @author Mike
  * @project overwatch
- * @date 10/12/2017, 3:05 PM
+ * @date 10/12/2017, 2:45 PM
  * @e-mail mike@mikecoder.cn
  */
-@SpringBootApplication
-public class Main {
+public class MyPipelineFactory implements ChannelPipelineFactory {
     
-    @Autowired
-    private RecordRepository recordRepository;
+    private final  Timer          timer;
+    private static ChannelHandler idleStateHandler;
     
-    public static void main(String[] args) {
-        Object[] classes = new Object[2];
-        classes[0] = ClientController.class;
-        classes[1] = NettyServer.class;
+    public MyPipelineFactory(Timer t) {
+        this.timer = t;
+    }
+    
+    public ChannelPipeline getPipeline() {
+        // create default pipeline from static method
+        ChannelPipeline pipeline = Channels.pipeline();
         
-        SpringApplication.run(classes, args);
+        // Decoders
+        pipeline.addLast("framer", new DelimiterBasedFrameDecoder(Integer.MAX_VALUE, Delimiters.lineDelimiter()));
+        pipeline.addLast("stringDecoder", new StringDecoder(CharsetUtil.UTF_8));
+        pipeline.addLast("register", new ReportHandler());
+        
+        // Encoders
+        pipeline.addLast("stringEncoder", new StringEncoder(CharsetUtil.UTF_8));
+        return pipeline;
     }
 }

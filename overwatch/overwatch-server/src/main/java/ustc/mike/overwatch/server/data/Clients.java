@@ -21,33 +21,55 @@
  *
  ******************************************************************************/
 
-package ustc.mike.overwatch.server;
+package ustc.mike.overwatch.server.data;
 
-import ustc.mike.overwatch.server.data.RecordRepository;
-import ustc.mike.overwatch.server.net.NettyServer;
-import ustc.mike.overwatch.server.web.ClientController;
+import ustc.mike.overwatch.common.data.Client;
+import ustc.mike.overwatch.common.data.Data;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Mike
  * @project overwatch
- * @date 10/12/2017, 3:05 PM
+ * @date 08/12/2017, 11:39 AM
  * @e-mail mike@mikecoder.cn
  */
-@SpringBootApplication
-public class Main {
+public class Clients extends Data {
     
-    @Autowired
-    private RecordRepository recordRepository;
+    private volatile ConcurrentHashMap<String, Client> clients = new ConcurrentHashMap<String, Client>();
     
-    public static void main(String[] args) {
-        Object[] classes = new Object[2];
-        classes[0] = ClientController.class;
-        classes[1] = NettyServer.class;
+    /**
+     * Getter for property 'clients'.
+     *
+     * @return Value for property 'clients'.
+     */
+    public ConcurrentHashMap<String, Client> getClients() {
+        return clients;
+    }
+    
+    /**
+     * Setter for property 'clients'.
+     *
+     * @param clients Value to set for property 'clients'.
+     */
+    public void setClients(
+            ConcurrentHashMap<String, Client> clients)
+    {
+        this.clients = clients;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         
-        SpringApplication.run(classes, args);
+        Clients clients1 = (Clients) o;
+        
+        return clients != null ? clients.equals(clients1.clients) : clients1.clients == null;
+    }
+    
+    @Override
+    public int hashCode() {
+        return clients != null ? clients.hashCode() : 0;
     }
 }

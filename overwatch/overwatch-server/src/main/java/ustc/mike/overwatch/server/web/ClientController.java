@@ -26,6 +26,8 @@ package ustc.mike.overwatch.server.web;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -38,9 +40,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @EnableAutoConfiguration
 public class ClientController {
     
-    @RequestMapping("/clients")
+    @RequestMapping(value = "/clients")
     @ResponseBody
     public String getClientList() {
         return "f";
+    }
+    
+    @RequestMapping(value = "/client", method = RequestMethod.GET)
+    @ResponseBody
+    public String getClientRecords(@RequestParam(name = "name") String name) {
+        return "";
+    }
+    
+    @RequestMapping(value = "/client", method = RequestMethod.DELETE)
+    @ResponseBody
+    public String deleteClient(@RequestParam(name = "name") String name) {
+        return "";
+    }
+    
+    @RequestMapping(value = "/alert", method = RequestMethod.GET)
+    @ResponseBody
+    public String alert() {
+        return "";
     }
 }
