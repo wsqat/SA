@@ -25,10 +25,9 @@ package ustc.mike.overwatch.register.net;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelFactory;
-import org.jboss.netty.channel.ChannelPipeline;
-import org.jboss.netty.channel.ChannelPipelineFactory;
-import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
+import org.jboss.netty.util.HashedWheelTimer;
+import org.jboss.netty.util.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -56,8 +55,7 @@ public class NettyServer implements ApplicationContextAware {
     
     @Value("${rpcServer.port:9090}")
     int port;
-    ChannelFactory  factory;
-    ServerBootstrap bootstrap;
+    private ChannelFactory factory;
     
     /**
      * 启动
@@ -69,13 +67,10 @@ public class NettyServer implements ApplicationContextAware {
         logger.info("begin to start Register server at " + port);
         
         factory = new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool());
-        bootstrap = new ServerBootstrap(factory);
-        
-        bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
-            public ChannelPipeline getPipeline() {
-                return Channels.pipeline(new RegisterHandler());
-            }
-        });
+        ServerBootstrap bootstrap = new ServerBootstrap(factory);
+        Timer timer = new HashedWheelTimer();
+    
+        bootstrap.setPipelineFactory(new MyPipelineFactory(timer));
         
         
         bootstrap.setOption("child.tcpNoDelay", true);

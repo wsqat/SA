@@ -21,69 +21,45 @@
  *
  ******************************************************************************/
 
-package ustc.mike.overwatch.register.data;
+package ustc.mike.overwatch.register.net;
+
+import org.jboss.netty.channel.ChannelHandler;
+import org.jboss.netty.channel.ChannelPipeline;
+import org.jboss.netty.channel.ChannelPipelineFactory;
+import org.jboss.netty.channel.Channels;
+import org.jboss.netty.handler.codec.frame.DelimiterBasedFrameDecoder;
+import org.jboss.netty.handler.codec.frame.Delimiters;
+import org.jboss.netty.handler.codec.string.StringDecoder;
+import org.jboss.netty.handler.codec.string.StringEncoder;
+import org.jboss.netty.util.CharsetUtil;
+import org.jboss.netty.util.Timer;
 
 /**
  * @author Mike
  * @project overwatch
- * @date 08/12/2017, 11:19 AM
+ * @date 10/12/2017, 2:45 PM
  * @e-mail mike@mikecoder.cn
  */
-public class Server extends Data {
-    private long   id;
-    private String ip;
+public class MyPipelineFactory implements ChannelPipelineFactory {
     
-    /**
-     * Getter for property 'id'.
-     *
-     * @return Value for property 'id'.
-     */
-    public long getId() {
-        return id;
+    private final  Timer          timer;
+    private static ChannelHandler idleStateHandler;
+    
+    public MyPipelineFactory(Timer t) {
+        this.timer = t;
     }
     
-    /**
-     * Setter for property 'id'.
-     *
-     * @param id Value to set for property 'id'.
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
-    
-    /**
-     * Getter for property 'ip'.
-     *
-     * @return Value for property 'ip'.
-     */
-    public String getIp() {
-        return ip;
-    }
-    
-    /**
-     * Setter for property 'ip'.
-     *
-     * @param ip Value to set for property 'ip'.
-     */
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-    
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public ChannelPipeline getPipeline() {
+        // create default pipeline from static method
+        ChannelPipeline pipeline = Channels.pipeline();
         
-        Server server = (Server) o;
-    
-        if (id != server.id) return false;
-        return ip != null ? ip.equals(server.ip) : server.ip == null;
-    }
-    
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (ip != null ? ip.hashCode() : 0);
-        return result;
+        // Decoders
+        pipeline.addLast("framer", new DelimiterBasedFrameDecoder(Integer.MAX_VALUE, Delimiters.lineDelimiter()));
+        pipeline.addLast("stringDecoder", new StringDecoder(CharsetUtil.UTF_8));
+        pipeline.addLast("register", new RegisterHandler());
+        
+        // Encoders
+        pipeline.addLast("stringEncoder", new StringEncoder(CharsetUtil.UTF_8));
+        return pipeline;
     }
 }

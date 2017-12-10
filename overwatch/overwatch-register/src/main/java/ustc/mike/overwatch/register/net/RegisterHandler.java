@@ -23,7 +23,12 @@
 
 package ustc.mike.overwatch.register.net;
 
-import org.jboss.netty.buffer.ChannelBuffer;
+import com.alibaba.fastjson.JSON;
+import ustc.mike.overwatch.common.data.Command;
+import ustc.mike.overwatch.common.data.CommandType;
+import ustc.mike.overwatch.register.data.Common;
+import ustc.mike.overwatch.register.data.Server;
+
 import org.jboss.netty.channel.*;
 
 
@@ -36,44 +41,57 @@ import org.jboss.netty.channel.*;
 public class RegisterHandler extends SimpleChannelHandler {
     
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) {
-        System.out.println("in messagereceived");
-        ChannelBuffer buf = (ChannelBuffer) e.getMessage();
-        while (buf.readable()) {
-            System.out.print((char) buf.readByte());
-            System.out.flush();
+        Command command = (Command) JSON.parseObject(e.getMessage().toString(), Command.class);
+        System.out.println(command);
+        switch (command.getType()) {
+            case CommandType.SERVER_ONLINE: {
+                Server server = new Server();
+                server.setId(Common.SERVER_ID.getAndAdd(1));
+                server.setIp(command.getContents().get("ip"));
+            
+                Common.SERVERS.getServers().put(String.valueOf(server.getId()), server);
+            
+                e.getChannel().write(server.toString());
+                break;
+            }
+            case CommandType.CLIENT_REGIST: {
+                boolean hasServer = false;
+                for (Server server : Common.SERVERS.getServers().values()) {
+                    e.getChannel().write(server.toString());
+                    hasServer = true;
+                    break;
+                }
+            
+                if (!hasServer) e.getChannel().write("No Server");
+                break;
+            }
         }
     }
     
     @Override
-    public void writeRequested(ChannelHandlerContext ctx, MessageEvent e) {
-        System.out.println("message event " + e.toString());
+    public void writeRequested(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
+        super.writeRequested(ctx, e);
     }
     
     @Override
     public void handleUpstream(ChannelHandlerContext ctx, ChannelEvent e) throws Exception {
-        System.out.println("in upstream");
-        if (e instanceof ChannelStateEvent) {
-            System.out.println("Channel state changed: " + e);
-        }
         super.handleUpstream(ctx, e);
     }
     
     @Override
     public void handleDownstream(ChannelHandlerContext ctx, ChannelEvent e) throws Exception {
-        System.out.println("in downstream");
-        MessageEvent me = null;
-        if (e instanceof MessageEvent) {
-            System.out.println("Writing:: " + e);
-            me = (MessageEvent) e;
-        }
-        
-        
-        Channels.write(ctx, me.getFuture(), "write from downstream handler");
         super.handleDownstream(ctx, e);
     }
     
     @Override
     public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
-        System.out.println("channelconected");
+        super.channelConnected(ctx, e);
     }
+    
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception {
+        System.out.println(e.toString());
+        e.getCause().printStackTrace();
+    }
+    
 }

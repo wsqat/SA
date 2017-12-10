@@ -28,7 +28,6 @@ import ustc.mike.overwatch.register.web.CheckClientController;
 import ustc.mike.overwatch.register.web.CheckServerController;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author Mike
@@ -37,7 +36,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @e-mail mike@mikecoder.cn
  */
 
-@SpringBootApplication
 public class Main {
     public static void main(String[] args) throws Exception {
         Object[] classes = new Object[3];

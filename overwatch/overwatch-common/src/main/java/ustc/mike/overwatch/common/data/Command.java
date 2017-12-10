@@ -21,71 +21,63 @@
  *
  ******************************************************************************/
 
-package ustc.mike.overwatch.register.data;
+package ustc.mike.overwatch.common.data;
+
+import com.alibaba.fastjson.JSON;
+
+import java.util.HashMap;
 
 /**
  * @author Mike
  * @project overwatch
- * @date 08/12/2017, 11:20 AM
+ * @date 10/12/2017, 1:41 PM
  * @e-mail mike@mikecoder.cn
  */
-public class Client extends Data {
-    private long   id;
-    private String ip;
-    private String name;
+public class Command {
+    
+    private int type;
+    
+    private HashMap<String, String> contents;
     
     /**
-     * Getter for property 'id'.
+     * Getter for property 'type'.
      *
-     * @return Value for property 'id'.
+     * @return Value for property 'type'.
      */
-    public long getId() {
-        return id;
+    public int getType() {
+        return type;
     }
     
     /**
-     * Setter for property 'id'.
+     * Setter for property 'type'.
      *
-     * @param id Value to set for property 'id'.
+     * @param type Value to set for property 'type'.
      */
-    public void setId(long id) {
-        this.id = id;
+    public void setType(int type) {
+        this.type = type;
     }
     
     /**
-     * Getter for property 'ip'.
+     * Getter for property 'contents'.
      *
-     * @return Value for property 'ip'.
+     * @return Value for property 'contents'.
      */
-    public String getIp() {
-        return ip;
+    public HashMap<String, String> getContents() {
+        return contents;
     }
     
     /**
-     * Setter for property 'ip'.
+     * Setter for property 'contents'.
      *
-     * @param ip Value to set for property 'ip'.
+     * @param contents Value to set for property 'contents'.
      */
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setContents(HashMap<String, String> contents) {
+        this.contents = contents;
     }
     
-    /**
-     * Getter for property 'name'.
-     *
-     * @return Value for property 'name'.
-     */
-    public String getName() {
-        return name;
-    }
-    
-    /**
-     * Setter for property 'name'.
-     *
-     * @param name Value to set for property 'name'.
-     */
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
     }
     
     @Override
@@ -93,18 +85,16 @@ public class Client extends Data {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         
-        Client client = (Client) o;
-    
-        if (id != client.id) return false;
-        if (ip != null ? !ip.equals(client.ip) : client.ip != null) return false;
-        return name != null ? name.equals(client.name) : client.name == null;
+        Command command = (Command) o;
+        
+        if (type != command.type) return false;
+        return contents != null ? contents.equals(command.contents) : command.contents == null;
     }
     
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (ip != null ? ip.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        int result = type;
+        result = 31 * result + (contents != null ? contents.hashCode() : 0);
         return result;
     }
 }

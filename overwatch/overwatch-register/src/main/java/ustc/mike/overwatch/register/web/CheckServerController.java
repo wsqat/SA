@@ -23,6 +23,7 @@
 
 package ustc.mike.overwatch.register.web;
 
+import com.alibaba.fastjson.JSON;
 import ustc.mike.overwatch.register.data.Common;
 import ustc.mike.overwatch.register.data.Server;
 
@@ -42,7 +43,7 @@ public class CheckServerController {
     @RequestMapping(value = "/servers", method = RequestMethod.GET)
     @ResponseBody
     public String getServerList() {
-        return Common.SERVERS.getServers().toString();
+        return JSON.toJSONString(Common.SERVERS.getServers().values());
     }
     
     @RequestMapping(value = "/server", method = RequestMethod.GET)
