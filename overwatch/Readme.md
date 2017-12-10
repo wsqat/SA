@@ -31,5 +31,11 @@ overwatch
 ### 组件依赖:
 
 1. 使用 springboot 实现 restful 接口开发
-2. 使用 druid 实现数据库连接池的保持
-3. 使用 netty 实现连接的良好扩展性
+2. 使用 netty 实现连接的良好扩展性
+3. 使用 hibernate 实现数据库快速开发
+
+### API 文档
+See [@API.md](./API.md)
+
+### 部署文档
+See [@Deploy.md](./Deploy.md)
