@@ -35,8 +35,6 @@ import org.jboss.netty.channel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-
 
 /**
  * @author Mike
@@ -76,7 +74,7 @@ public class ReportHandler extends SimpleChannelHandler {
                 record.setOs(report.getOS());
                 
                 Common.recordRepository.save(record);
-                System.out.println(Arrays.toString(Common.recordRepository.findAll().toArray()));
+                System.out.println(JSON.toJSON(Common.recordRepository.findAll()));
                 break;
             }
         }
@@ -85,8 +83,10 @@ public class ReportHandler extends SimpleChannelHandler {
     @Override
     public void channelClosed(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
         Client client = (Client) ctx.getAttachment();
-        logger.info(client.getName() + " offline!");
-        Common.clients.getClients().get(client.getName()).setOnline(false);
+        if (client != null) {
+            logger.info(client.getName() + " offline!");
+            Common.clients.getClients().get(client.getName()).setOnline(false);
+        }
         super.channelClosed(ctx, e);
     }
     

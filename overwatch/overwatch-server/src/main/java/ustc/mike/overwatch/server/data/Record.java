@@ -24,10 +24,7 @@
 package ustc.mike.overwatch.server.data;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * @author Mike
@@ -39,21 +36,22 @@ import javax.persistence.Id;
 public class Record {
     @Id
     @GeneratedValue
+    @Column(nullable = false, name = "id")
     private Long id;
     
-    @Column(nullable = false)
+    @Column(nullable = false, name = "name")
     private String name;
     
-    @Column(nullable = false)
+    @Column(nullable = false, name = "avgload")
     private Double avgload;
     
-    @Column(nullable = false)
+    @Column(nullable = false, name = "os")
     private String os;
     
-    @Column(nullable = false)
+    @Column(nullable = false, name = "timestamp")
     private Long timestamp;
     
-    @Column(nullable = false)
+    @Column(nullable = false, name = "cpunum")
     private Integer cpunum;
     
     

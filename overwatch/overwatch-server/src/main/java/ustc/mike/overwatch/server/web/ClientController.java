@@ -23,12 +23,20 @@
 
 package ustc.mike.overwatch.server.web;
 
+import com.alibaba.fastjson.JSON;
+import ustc.mike.overwatch.common.data.Client;
+import ustc.mike.overwatch.server.data.Common;
+import ustc.mike.overwatch.server.data.RecordRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.LinkedList;
 
 /**
  * @author Mike
@@ -40,27 +48,40 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @EnableAutoConfiguration
 public class ClientController {
     
+    @Autowired
+    RecordRepository recordRepository;
+    
     @RequestMapping(value = "/clients")
     @ResponseBody
     public String getClientList() {
-        return "f";
+        return JSON.toJSONString(Common.clients.getClients().values());
     }
     
     @RequestMapping(value = "/client", method = RequestMethod.GET)
     @ResponseBody
-    public String getClientRecords(@RequestParam(name = "name") String name) {
-        return "";
+    public String getClientRecords(@RequestParam(name = "name") String name,
+                                   @RequestParam(name = "start") long start,
+                                   @RequestParam(name = "end") long end)
+    {
+        return JSON.toJSONString(recordRepository.getRecords(name, start, end));
     }
     
     @RequestMapping(value = "/client", method = RequestMethod.DELETE)
     @ResponseBody
     public String deleteClient(@RequestParam(name = "name") String name) {
-        return "";
+        Common.clients.getClients().remove(name);
+        return "{}";
     }
     
     @RequestMapping(value = "/alert", method = RequestMethod.GET)
     @ResponseBody
     public String alert() {
-        return "";
+        LinkedList<Client> clients = new LinkedList<Client>();
+        for (Client client : Common.clients.getClients().values()) {
+            if (!client.isOnline()) {
+                clients.add(client);
+            }
+        }
+        return JSON.toJSONString(clients);
     }
 }

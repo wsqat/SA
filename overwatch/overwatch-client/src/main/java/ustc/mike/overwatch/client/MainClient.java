@@ -52,7 +52,7 @@ import java.util.TimerTask;
 @SpringBootApplication
 @Component
 @EnableAutoConfiguration
-public class Main implements CommandLineRunner {
+public class MainClient implements CommandLineRunner {
     @Value("${overwatch.register.port:9090}")
     int    port;
     @Value("${overwatch.register.ip:127.0.0.1}")
@@ -64,7 +64,7 @@ public class Main implements CommandLineRunner {
     
     @Override
     public void run(String... args) throws Exception {
-        Logger logger = LoggerFactory.getLogger(Main.class.getName());
+        Logger logger = LoggerFactory.getLogger(MainClient.class.getName());
         String localIp = InetAddress.getLocalHost().getHostAddress();
     
         client.setName(Utils.genRandomName());
@@ -94,7 +94,7 @@ public class Main implements CommandLineRunner {
         final BufferedWriter reporter = new BufferedWriter(new OutputStreamWriter(ReportSocket.getOutputStream()));
     
         Command onlineCmd = new Command();
-        onlineCmd.setType(CommandType.CLIENT_REGIST);
+        onlineCmd.setType(CommandType.CLIENT_ONLINE);
         HashMap<String, String> onlineCmdContents = new HashMap<String, String>();
         onlineCmdContents.put("client", client.toString());
         onlineCmd.setContents(onlineCmdContents);
@@ -130,6 +130,6 @@ public class Main implements CommandLineRunner {
     }
     
     public static void main(String[] args) {
-        SpringApplication.run(Main.class);
+        SpringApplication.run(MainClient.class);
     }
 }

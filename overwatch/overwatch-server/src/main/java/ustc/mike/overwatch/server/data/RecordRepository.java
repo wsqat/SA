@@ -39,6 +39,11 @@ import java.util.List;
 @Repository
 public interface RecordRepository extends JpaRepository<Record, Long> {
     
-    @Query("from record where record.name=:name and timestamp > :start and timestamp < :end order by timestamp desc")
-    List<Record> getRecords(@Param("name") String name, @Param("start") long start, @Param("end") long end);
+    
+    @Query("select t from Record t ")
+    List<Record> getList();
+    
+    
+    @Query("from Record t where t.name=:name and :start < t.timestamp and t.timestamp < :end order by t.timestamp desc")
+    List<Record> getRecords(@Param("name") String name, @Param("start") Long start, @Param("end") Long end);
 }

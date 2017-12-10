@@ -21,30 +21,30 @@
  *
  ******************************************************************************/
 
+package ustc.mike.overwatch.register;
+
+import ustc.mike.overwatch.register.net.NettyServer;
+import ustc.mike.overwatch.register.web.CheckClientController;
+import ustc.mike.overwatch.register.web.CheckServerController;
+
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author Mike
  * @project overwatch
- * @date 07/12/2017, 6:53 PM
+ * @date 08/12/2017, 11:10 AM
  * @e-mail mike@mikecoder.cn
  */
 
-@Controller
-@EnableAutoConfiguration
-public class TestController {
-    
-    @RequestMapping("/")
-    @ResponseBody
-    String home() {
-        return "Hello World!";
-    }
-    
+@SpringBootApplication
+public class MainRegister {
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(TestController.class, args);
+        Object[] classes = new Object[3];
+        classes[0] = CheckClientController.class;
+        classes[1] = CheckServerController.class;
+        classes[2] = NettyServer.class;
+        
+        SpringApplication.run(classes, args);
     }
 }

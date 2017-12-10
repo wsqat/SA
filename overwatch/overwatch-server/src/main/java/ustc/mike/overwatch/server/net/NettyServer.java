@@ -23,6 +23,9 @@
 
 package ustc.mike.overwatch.server.net;
 
+import ustc.mike.overwatch.server.data.Common;
+import ustc.mike.overwatch.server.data.RecordRepository;
+
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
@@ -31,6 +34,7 @@ import org.jboss.netty.util.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -52,9 +56,12 @@ public class NettyServer implements ApplicationContextAware {
     
     private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
     
-    @Value("${rpcServer.port:9090}")
+    @Value("${rpcServer.port:9091}")
     int port;
     private ChannelFactory factory;
+    
+    @Autowired
+    RecordRepository recordRepository;
     
     /**
      * 启动
@@ -63,6 +70,7 @@ public class NettyServer implements ApplicationContextAware {
      */
     @PostConstruct
     public void start() throws InterruptedException {
+        Common.recordRepository = recordRepository;
         logger.info("begin to start server at " + port);
         
         factory = new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool());
