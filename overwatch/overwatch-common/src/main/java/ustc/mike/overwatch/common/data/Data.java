@@ -21,69 +21,19 @@
  *
  ******************************************************************************/
 
-package ustc.mike.overwatch.register.data;
+package ustc.mike.overwatch.common.data;
+
+import com.alibaba.fastjson.JSON;
 
 /**
  * @author Mike
  * @project overwatch
- * @date 08/12/2017, 11:19 AM
+ * @date 08/12/2017, 1:34 PM
  * @e-mail mike@mikecoder.cn
  */
-public class Server extends Data {
-    private long   id;
-    private String ip;
-    
-    /**
-     * Getter for property 'id'.
-     *
-     * @return Value for property 'id'.
-     */
-    public long getId() {
-        return id;
-    }
-    
-    /**
-     * Setter for property 'id'.
-     *
-     * @param id Value to set for property 'id'.
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
-    
-    /**
-     * Getter for property 'ip'.
-     *
-     * @return Value for property 'ip'.
-     */
-    public String getIp() {
-        return ip;
-    }
-    
-    /**
-     * Setter for property 'ip'.
-     *
-     * @param ip Value to set for property 'ip'.
-     */
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-    
+public class Data {
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        
-        Server server = (Server) o;
-    
-        if (id != server.id) return false;
-        return ip != null ? ip.equals(server.ip) : server.ip == null;
-    }
-    
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (ip != null ? ip.hashCode() : 0);
-        return result;
+    public String toString() {
+        return JSON.toJSONString(this) + "\n";
     }
 }

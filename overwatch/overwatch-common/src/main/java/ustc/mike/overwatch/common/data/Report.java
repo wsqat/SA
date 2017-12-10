@@ -23,61 +23,69 @@
 
 package ustc.mike.overwatch.common.data;
 
-import com.alibaba.fastjson.JSON;
-
-import java.util.HashMap;
-
 /**
  * @author Mike
  * @project overwatch
- * @date 10/12/2017, 1:41 PM
+ * @date 10/12/2017, 3:31 PM
  * @e-mail mike@mikecoder.cn
  */
-public class Command {
-    
-    private int type;
-    
-    private HashMap<String, String> contents;
+public class Report extends Data {
+    private String OS;
+    private double load;
+    private int    cpus;
     
     /**
-     * Getter for property 'type'.
+     * Getter for property 'OS'.
      *
-     * @return Value for property 'type'.
+     * @return Value for property 'OS'.
      */
-    public int getType() {
-        return type;
+    public String getOS() {
+        return OS;
     }
     
     /**
-     * Setter for property 'type'.
+     * Setter for property 'OS'.
      *
-     * @param type Value to set for property 'type'.
+     * @param OS Value to set for property 'OS'.
      */
-    public void setType(int type) {
-        this.type = type;
+    public void setOS(String OS) {
+        this.OS = OS;
     }
     
     /**
-     * Getter for property 'contents'.
+     * Getter for property 'load'.
      *
-     * @return Value for property 'contents'.
+     * @return Value for property 'load'.
      */
-    public HashMap<String, String> getContents() {
-        return contents;
+    public double getLoad() {
+        return load;
     }
     
     /**
-     * Setter for property 'contents'.
+     * Setter for property 'load'.
      *
-     * @param contents Value to set for property 'contents'.
+     * @param load Value to set for property 'load'.
      */
-    public void setContents(HashMap<String, String> contents) {
-        this.contents = contents;
+    public void setLoad(double load) {
+        this.load = load;
     }
     
-    @Override
-    public String toString() {
-        return JSON.toJSONString(this) + "\n";
+    /**
+     * Getter for property 'cpus'.
+     *
+     * @return Value for property 'cpus'.
+     */
+    public int getCpus() {
+        return cpus;
+    }
+    
+    /**
+     * Setter for property 'cpus'.
+     *
+     * @param cpus Value to set for property 'cpus'.
+     */
+    public void setCpus(int cpus) {
+        this.cpus = cpus;
     }
     
     @Override
@@ -85,16 +93,21 @@ public class Command {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         
-        Command command = (Command) o;
+        Report report = (Report) o;
         
-        if (type != command.type) return false;
-        return contents != null ? contents.equals(command.contents) : command.contents == null;
+        if (Double.compare(report.load, load) != 0) return false;
+        if (cpus != report.cpus) return false;
+        return OS != null ? OS.equals(report.OS) : report.OS == null;
     }
     
     @Override
     public int hashCode() {
-        int result = type;
-        result = 31 * result + (contents != null ? contents.hashCode() : 0);
+        int result;
+        long temp;
+        result = OS != null ? OS.hashCode() : 0;
+        temp = Double.doubleToLongBits(load);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + cpus;
         return result;
     }
 }

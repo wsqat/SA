@@ -23,61 +23,69 @@
 
 package ustc.mike.overwatch.common.data;
 
-import com.alibaba.fastjson.JSON;
-
-import java.util.HashMap;
-
 /**
  * @author Mike
  * @project overwatch
- * @date 10/12/2017, 1:41 PM
+ * @date 08/12/2017, 11:20 AM
  * @e-mail mike@mikecoder.cn
  */
-public class Command {
-    
-    private int type;
-    
-    private HashMap<String, String> contents;
+public class Client extends Data {
+    private boolean isOnline;
+    private String  ip;
+    private String  name;
     
     /**
-     * Getter for property 'type'.
+     * Getter for property 'online'.
      *
-     * @return Value for property 'type'.
+     * @return Value for property 'online'.
      */
-    public int getType() {
-        return type;
+    public boolean isOnline() {
+        return isOnline;
     }
     
     /**
-     * Setter for property 'type'.
+     * Setter for property 'online'.
      *
-     * @param type Value to set for property 'type'.
+     * @param online Value to set for property 'online'.
      */
-    public void setType(int type) {
-        this.type = type;
+    public void setOnline(boolean online) {
+        isOnline = online;
     }
     
     /**
-     * Getter for property 'contents'.
+     * Getter for property 'ip'.
      *
-     * @return Value for property 'contents'.
+     * @return Value for property 'ip'.
      */
-    public HashMap<String, String> getContents() {
-        return contents;
+    public String getIp() {
+        return ip;
     }
     
     /**
-     * Setter for property 'contents'.
+     * Setter for property 'ip'.
      *
-     * @param contents Value to set for property 'contents'.
+     * @param ip Value to set for property 'ip'.
      */
-    public void setContents(HashMap<String, String> contents) {
-        this.contents = contents;
+    public void setIp(String ip) {
+        this.ip = ip;
     }
     
-    @Override
-    public String toString() {
-        return JSON.toJSONString(this) + "\n";
+    /**
+     * Getter for property 'name'.
+     *
+     * @return Value for property 'name'.
+     */
+    public String getName() {
+        return name;
+    }
+    
+    /**
+     * Setter for property 'name'.
+     *
+     * @param name Value to set for property 'name'.
+     */
+    public void setName(String name) {
+        this.name = name;
     }
     
     @Override
@@ -85,16 +93,18 @@ public class Command {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         
-        Command command = (Command) o;
-        
-        if (type != command.type) return false;
-        return contents != null ? contents.equals(command.contents) : command.contents == null;
+        Client client = (Client) o;
+    
+        if (isOnline != client.isOnline) return false;
+        if (ip != null ? !ip.equals(client.ip) : client.ip != null) return false;
+        return name != null ? name.equals(client.name) : client.name == null;
     }
     
     @Override
     public int hashCode() {
-        int result = type;
-        result = 31 * result + (contents != null ? contents.hashCode() : 0);
+        int result = (isOnline ? 1 : 0);
+        result = 31 * result + (ip != null ? ip.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 }

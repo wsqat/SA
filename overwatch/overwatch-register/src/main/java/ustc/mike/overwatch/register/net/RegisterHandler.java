@@ -27,7 +27,7 @@ import com.alibaba.fastjson.JSON;
 import ustc.mike.overwatch.common.data.Command;
 import ustc.mike.overwatch.common.data.CommandType;
 import ustc.mike.overwatch.register.data.Common;
-import ustc.mike.overwatch.register.data.Server;
+import ustc.mike.overwatch.common.data.Server;
 
 import org.jboss.netty.channel.*;
 

@@ -33,7 +33,6 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class Common {
     
-    public static final AtomicLong CLIENT_ID = new AtomicLong(0);
     public static final AtomicLong SERVER_ID = new AtomicLong(0);
     
     public static final Clients CLIENTS = new Clients();

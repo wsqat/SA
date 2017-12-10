@@ -21,19 +21,35 @@
  *
  ******************************************************************************/
 
-package ustc.mike.overwatch.register.data;
+package ustc.mike.overwatch.client.utils;
 
-import com.alibaba.fastjson.JSON;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 
 /**
  * @author Mike
  * @project overwatch
- * @date 08/12/2017, 1:34 PM
+ * @date 10/12/2017, 3:08 PM
  * @e-mail mike@mikecoder.cn
  */
-public class Data {
-    @Override
-    public String toString() {
-        return JSON.toJSONString(this);
+public class Utils {
+    
+    public static int getCpuNum() {
+        OperatingSystemMXBean osmxb = (OperatingSystemMXBean) ManagementFactory
+                .getOperatingSystemMXBean();
+        return osmxb.getAvailableProcessors();
+    }
+    
+    
+    public static String getOs() {
+        OperatingSystemMXBean osmxb = (OperatingSystemMXBean) ManagementFactory
+                .getOperatingSystemMXBean();
+        return osmxb.getArch() + osmxb.getName() + osmxb.getVersion();
+    }
+    
+    public static double getAvgLoad() {
+        OperatingSystemMXBean osmxb = (OperatingSystemMXBean) ManagementFactory
+                .getOperatingSystemMXBean();
+        return osmxb.getSystemLoadAverage();
     }
 }

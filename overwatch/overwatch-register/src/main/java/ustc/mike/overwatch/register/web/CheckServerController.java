@@ -25,7 +25,7 @@ package ustc.mike.overwatch.register.web;
 
 import com.alibaba.fastjson.JSON;
 import ustc.mike.overwatch.register.data.Common;
-import ustc.mike.overwatch.register.data.Server;
+import ustc.mike.overwatch.common.data.Server;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;

@@ -21,55 +21,14 @@
  *
  ******************************************************************************/
 
-package ustc.mike.overwatch.register.data;
-
-import ustc.mike.overwatch.common.data.Client;
-import ustc.mike.overwatch.common.data.Data;
-
-import java.util.concurrent.ConcurrentHashMap;
+package ustc.mike.overwatch.server;
 
 /**
  * @author Mike
  * @project overwatch
- * @date 08/12/2017, 11:39 AM
+ * @date 10/12/2017, 3:05 PM
  * @e-mail mike@mikecoder.cn
  */
-public class Clients extends Data {
+public class Main {
     
-    private volatile ConcurrentHashMap<String, Client> clients = new ConcurrentHashMap<String, Client>();
-    
-    /**
-     * Getter for property 'clients'.
-     *
-     * @return Value for property 'clients'.
-     */
-    public ConcurrentHashMap<String, Client> getClients() {
-        return clients;
-    }
-    
-    /**
-     * Setter for property 'clients'.
-     *
-     * @param clients Value to set for property 'clients'.
-     */
-    public void setClients(
-            ConcurrentHashMap<String, Client> clients)
-    {
-        this.clients = clients;
-    }
-    
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        
-        Clients clients1 = (Clients) o;
-        
-        return clients != null ? clients.equals(clients1.clients) : clients1.clients == null;
-    }
-    
-    @Override
-    public int hashCode() {
-        return clients != null ? clients.hashCode() : 0;
-    }
 }

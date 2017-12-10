@@ -23,6 +23,9 @@
 
 package ustc.mike.overwatch.register.data;
 
+import ustc.mike.overwatch.common.data.Data;
+import ustc.mike.overwatch.common.data.Server;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 /**

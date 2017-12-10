@@ -21,18 +21,17 @@
  *
  ******************************************************************************/
 
-package ustc.mike.overwatch.register.data;
+package ustc.mike.overwatch.common.data;
 
 /**
  * @author Mike
  * @project overwatch
- * @date 08/12/2017, 11:20 AM
+ * @date 08/12/2017, 11:19 AM
  * @e-mail mike@mikecoder.cn
  */
-public class Client extends Data {
+public class Server extends Data {
     private long   id;
     private String ip;
-    private String name;
     
     /**
      * Getter for property 'id'.
@@ -70,41 +69,21 @@ public class Client extends Data {
         this.ip = ip;
     }
     
-    /**
-     * Getter for property 'name'.
-     *
-     * @return Value for property 'name'.
-     */
-    public String getName() {
-        return name;
-    }
-    
-    /**
-     * Setter for property 'name'.
-     *
-     * @param name Value to set for property 'name'.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         
-        Client client = (Client) o;
+        Server server = (Server) o;
     
-        if (id != client.id) return false;
-        if (ip != null ? !ip.equals(client.ip) : client.ip != null) return false;
-        return name != null ? name.equals(client.name) : client.name == null;
+        if (id != server.id) return false;
+        return ip != null ? ip.equals(server.ip) : server.ip == null;
     }
     
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (ip != null ? ip.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 }
