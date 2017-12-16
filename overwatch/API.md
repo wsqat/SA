@@ -63,8 +63,8 @@ response:
 #### 删除客户端
 
 ```
-url: http://{deployUrl}:10641/client?name={name}
-method: DELETE
+url: http://{deployUrl}:10641/delclient?name={name}
+method: GET
 param:
         name: 第一个 api 中获得的 name 字段
 response: {}

@@ -90,6 +90,7 @@ public class MainClient implements CommandLineRunner {
         Server server = JSON.parseObject(response, Server.class);
         
         logger.info("Connect to :" + server + ":" + serverPort);
+        server.setIp("127.0.0.1");
         Socket ReportSocket = new Socket(server.getIp(), serverPort);
         final BufferedWriter reporter = new BufferedWriter(new OutputStreamWriter(ReportSocket.getOutputStream()));
     

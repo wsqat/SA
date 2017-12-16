@@ -66,7 +66,8 @@ public class ClientController {
         return JSON.toJSONString(recordRepository.getRecords(name, start, end));
     }
     
-    @RequestMapping(value = "/client", method = RequestMethod.DELETE)
+//    @RequestMapping(value = "/client", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delclient", method = RequestMethod.GET)
     @ResponseBody
     public String deleteClient(@RequestParam(name = "name") String name) {
         Common.clients.getClients().remove(name);
